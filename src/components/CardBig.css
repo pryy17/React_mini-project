@@ -1,0 +1,5 @@
+.card-big {
+    -webkit-box-shadow: -12px 11px 23px -10px rgba(0,0,0,0.75) !important;
+    -moz-box-shadow: -12px 11px 23px -10px rgba(0,0,0,0.75) !important;
+    box-shadow: -12px 11px 23px -10px rgba(0,0,0,0.75) !important;
+}
