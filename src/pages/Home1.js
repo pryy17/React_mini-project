@@ -1,18 +1,15 @@
-import React from "react";
-import { Col, Button, Row, Card } from "react-bootstrap";
+import React, { useEffect } from "react";
+import { Col, Button, Row} from "react-bootstrap";
 import CardIcon from "../components/CardIcon";
-import CardMenu from "../components/CardMenu";
 import CardSlider from "../components/CardSlider";
 import "./Home.css";
-import { useSelector, useDispatch } from "react-redux";
-import { tampil } from "../redux/menuSlice";
-import Categories from "../components/Categories";
 import MenuList from "../components/MenuList";
 import CardBig from "../components/CardBig";
+import Footer from "../components/Footer";
 
 export default function Home1() {
-  const dispatch = useDispatch();
 
+  
   return (
     <div>
       <div className="header-container">
@@ -71,26 +68,26 @@ export default function Home1() {
         </div>
       </div>
 
-      <div className="d-flex justify-content-evenly text-decoration-none mt-5">
-        <div style={{ overflow: "hidden", width: "60em" }}>
+      <div className="d-flex justify-content-evenly text-decoration-none mt-5" style={{ overflow: "hidden"}}>
+        <div style={{ width: "60em" }}>
           <Row className="my-5">
             <h1>Popular food</h1>
           </Row>
-          <Row className="d-flex justify-content-center">
-            <div className="cardSlider d-flex justify-content-center">
+          <Row >
+            <div>
               <CardSlider />
             </div>
           </Row>
         </div>
       </div>
 
-      <div className="d-flex justify-content-evenly text-decoration-none mt-5">
-        <div style={{ overflow: "hidden", width: "60em" }}>
-          <MenuList />
+      <div className="d-flex justify-content-center mt-5">
+        <div style={{width: "60em" }}>
+          <MenuList displayData={8} />
         </div>
       </div>
 
-      <div className="d-flex justify-content-evenly text-decoration-none mt-5">
+      <div className="d-flex justify-content-evenly text-decoration-none mt-5" style={{ overflow: "hidden"}}>
         <div style={{ width: "60em" }}>
           <CardBig
             position={"left"}
@@ -124,7 +121,7 @@ export default function Home1() {
       </div>
 
       <div
-        style={{ height: "285px" }}
+        style={{ height: "281px", overflow: "hidden" }}
         className="footer-top d-flex justify-content-center align-self-center"
       >
         <div className=" d-flex align-self-center">
@@ -133,7 +130,7 @@ export default function Home1() {
               <h1>Are you ready to order with the best deals?</h1>
             </Row>
             <Row>
-              <div style={{ width: "100%" }}>
+              <div style={{ width: "100%" }} className=" mt-4">
                 <Button
                   variant="primary"
                   style={{ backgroundColor: "#F17228" }}
@@ -146,6 +143,7 @@ export default function Home1() {
           </div>
         </div>
       </div>
+    
     </div>
   );
 }

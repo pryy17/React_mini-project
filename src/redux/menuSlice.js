@@ -10,8 +10,6 @@ export const menuSlice = createSlice({
     fetchData: (state, action) => {
       state.menus = action.payload.products;
       state.categories = action.payload.categories;
-
-      console.log("ini menu", state.menus);
     },
   },
 });

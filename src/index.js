@@ -4,17 +4,24 @@ import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import store from './redux/store'
-import { Provider } from 'react-redux'
+import store from './redux/store';
+import { Provider } from 'react-redux';
+import { ApolloProvider } from '@apollo/client';
+import client from "./apollo/apolloClient";
+import {BrowserRouter} from 'react-router-dom';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <BrowserRouter>
+      <Provider store={store}>
+        <ApolloProvider client={client}>
+          <App />
+        </ApolloProvider>
+      </Provider>
+    </BrowserRouter>
   </React.StrictMode>,
 );
 

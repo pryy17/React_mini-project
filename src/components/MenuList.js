@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import CardMenu from "./CardMenu";
 import { Row, Col } from "react-bootstrap";
 import Categories from "./Categories";
 
-export default function MenuList() {
+export default function MenuList(props) {
   const dataMenu = useSelector((state) => state.products.menus);
   const dataCategories = useSelector((state) => state.products.categories);
+  
 
   const menus = dataMenu; 
-
   return (
-    <div>
+    <div className=" d-grid">
       <div
         className="d-flex justify-content-center text-decoration-none my-5"
         style={{ overflow: "hidden" }}
@@ -35,20 +34,25 @@ export default function MenuList() {
         style={{ overflow: "hidden" }}
       >
         <div>
-          <Row className="my-5">
+          <Row className="mb-3">
             <h1>Menu list</h1>
           </Row>
           <Row className="d-flex justify-content-between">
-            {menus?.slice(0, 8).map((menu) => (
-              <Col className=" mb-4" key={menu.id}>
+            {menus?.slice(0, props.displayData).map((menu) => (
+              <Col className=" mb-4 d-flex justify-content-center" key={menu.id}>
                 <CardMenu
                   nama={menu.nama}
                   harga={menu.harga}
                   category={menu.category.nama}
                   image={menu.gambar}
+                  jumlah={menu.jumlah}
+                  kode={menu.kode}
                 />
               </Col>
-            ))}
+            ))
+            }
+            
+          
           </Row>
         </div>
       </div>

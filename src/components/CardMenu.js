@@ -1,10 +1,13 @@
 import React from "react";
 import { Button, Card } from "react-bootstrap";
+import ModalDetail from "./ModalDetail";
 
 export default function CardMenu(props) {
+
+  
   return (
     <div>
-      <Card style={{ width: "12rem" }} className="border-0">
+      <Card  style={{ width: "12rem" }} className="border-0">
         <div style={{height : "12rem"}}>
           <Card.Img variant="top" src={`img/makanan/${props.image}`} className="rounded" style={{height : "200px", width: "200px"}} />
         </div>
@@ -17,7 +20,7 @@ export default function CardMenu(props) {
             { props.category }
           </Card.Text>
         </Card.Body>
-        <Button variant="primary" style={{ backgroundColor : "#F17228"}} className=" border-0">Pesan</Button>
+        <ModalDetail image={props.image} nama={props.nama} harga={props.harga} category={props.category} kode={props.kode} />
       </Card>
     </div>
   );
