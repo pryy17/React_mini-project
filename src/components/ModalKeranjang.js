@@ -5,9 +5,9 @@ import { Row } from "react-bootstrap";
 import { FiEdit, FiTrash2 } from "react-icons/fi"
 
 const DATA_KERANJANG = gql`
-subscription MySubscription($_eq: Int = "") {
-  user_user(where: {id_user: {_eq: $_eq}}) {
-    keranjangs {
+subscription MySubscription2($_eq: Int = "") {
+  user_user {
+    keranjangs(where: {id_user: {_eq: $_eq}}) {
       category
       gambar
       harga
