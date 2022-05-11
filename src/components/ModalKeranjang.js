@@ -3,23 +3,43 @@ import { Modal, Button, Col } from "react-bootstrap";
 import { gql, useMutation, useQuery, useSubscription } from "@apollo/client";
 import { Row } from "react-bootstrap";
 import { FiEdit, FiTrash2 } from "react-icons/fi"
+import Swal from 'sweetalert2';
+import ModalEditKeranjang from "./ModalEditKeranjang";
+
+
+
 
 const DATA_KERANJANG = gql`
-subscription MySubscription2($_eq: Int = "") {
-  user_user {
-    keranjangs(where: {id_user: {_eq: $_eq}}) {
-      category
-      gambar
-      harga
-      id
-      id_user
-      jumlah
-      keterangan
-      kode
-      nama
-    }
+query MyQuery($_eq: Int = "") {
+  pesanan_keranjang(where: {id_user: {_eq: $_eq}}) {
+    category
+    gambar
+    harga
+    id
+    id_user
+    jumlah
+    keterangan
+    kode
+    nama
   }
 }
+`;
+
+const SUBSCIPTION_DATA = gql`
+subscription MySubscription($id: Int = "") {
+  pesanan_keranjang(where: {id_user: {_eq: $id}}) {
+    category
+    gambar
+    harga
+    id
+    id_user
+    jumlah
+    keterangan
+    kode
+    nama
+  }
+}
+
 `;
 
 const DELETE_KERANJANG = gql`
@@ -35,37 +55,55 @@ mutation MyMutation($_eq: Int = "") {
 
 export default function ModalKeranjang() {
   const [ deleteKeranjang, { loading: loadingDelete, error: errorDelete, data: dataDelete,}] = useMutation(DELETE_KERANJANG);
-
-  const useGetData = (userId) => {
-    const { data, loading } = useSubscription(
-      DATA_KERANJANG,
+  // const { data, loading, error, refetch } = useQuery(
+  //   DATA_KERANJANG,
+  //   { 
+  //     variables: {
+  //     "_eq": 1
+  //     },
+  //   });
+  
+  const { data, loading, error} = useSubscription(
+      SUBSCIPTION_DATA,
       { 
         variables: {
-        "_eq": userId
-        } 
+        "id": 1
+        },
       });
-    console.log(data);
-    return data;
-  };
 
-  const handleDelete = (idKeranjang) => {
-    deleteKeranjang({
+  const [lgShow, setLgShow] = useState(false);
+  const keranjang = data;
+  
+  useEffect(()=> {
+    // refetch()
+  })
+  console.log(error);
+  const handleDelete = async (idKeranjang) => {
+    Swal.fire(
+      'Delete',
+      'pesanan berhasil di hapus',
+      'success'
+    )
+    await deleteKeranjang({
       variables: {
         "_eq": idKeranjang,
       },
+
     })
+    
+    // refetch()
   }
 
-
-  const [lgShow, setLgShow] = useState(false);
-  const keranjang = useGetData(1);
-  console.log(keranjang)
+  
+  console.log(error)
   const handleModalTogle = () => {
     if (lgShow === false) {
       setLgShow(true);
     } else {
       setLgShow(false);
+      
     }
+    // refetch();
   };
 
   return (
@@ -113,7 +151,7 @@ export default function ModalKeranjang() {
           </Row>
 
           {/* body keranjang */}
-          {
+          {  
           keranjang?.pesanan_keranjang.map((keranjang)=>(
             <Row className=" mb-3" key={keranjang.id}>
             <Col style={{ overflow : "hidden"}}>
@@ -131,12 +169,14 @@ export default function ModalKeranjang() {
               <p>Rp.{keranjang.harga}</p>
             </Col>
             <Col className=" d-flex align-self-center justify-content-center pb-3 border-end">
-                <div onClick ={() => {handleDelete(keranjang.id)}} >
-                  < FiEdit />
+                <div>
+                  <ModalEditKeranjang  id={keranjang.id} keterangan={keranjang.keterangan} image={keranjang.gambar} nama={keranjang.nama} harga={keranjang.harga} jumlah={keranjang.jumlah} />
                 </div>
             </Col>
             <Col className=" d-flex align-self-center justify-content-center pb-3">
-              <FiTrash2 />
+              <div onClick ={() => {handleDelete(keranjang.id)}} >
+                <FiTrash2 />
+              </div>
             </Col>
           </Row>
           ))      

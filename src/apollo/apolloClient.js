@@ -1,34 +1,25 @@
-import {
-  ApolloProvider,
-  useQuery,
-  gql,
-  InMemoryCache,
-  ApolloClient
-} from "@apollo/client";
-import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
-import { createClient } from 'graphql-ws';
 import { split, HttpLink } from '@apollo/client';
 import { getMainDefinition } from '@apollo/client/utilities';
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
+import { createClient } from 'graphql-ws';
+import { ApolloClient, InMemoryCache } from '@apollo/client';
 
 const httpLink = new HttpLink({
-  uri: "https://valid-jaybird-88.hasura.app/v1/graphql",
-  cache: new InMemoryCache(),
+  uri: 'https://valid-jaybird-88.hasura.app/v1/graphql',
   headers: {
-     'x-hasura-admin-secret' :
-        '4W85hKZFI1QzmEYuYFE3ai7b6PcrdYOdmQWZZ4wOA8SXBSizgNzYq4vzCEVPPWw2', 
-  },
+    "x-hasura-admin-secret" : "4W85hKZFI1QzmEYuYFE3ai7b6PcrdYOdmQWZZ4wOA8SXBSizgNzYq4vzCEVPPWw2"
+  }
 });
 
 const wsLink = new GraphQLWsLink(createClient({
   url: 'ws://valid-jaybird-88.hasura.app/v1/graphql',
   connectionParams: {
-    headers: {
-      'x-hasura-admin-secret' :
-        '4W85hKZFI1QzmEYuYFE3ai7b6PcrdYOdmQWZZ4wOA8SXBSizgNzYq4vzCEVPPWw2', 
-    },
-  }
-  
+    Headers : {
+      "x-hasura-admin-secret" : "4W85hKZFI1QzmEYuYFE3ai7b6PcrdYOdmQWZZ4wOA8SXBSizgNzYq4vzCEVPPWw2"
+    }
+  },
 }));
+
 
 // The split function takes three parameters:
 //
@@ -49,11 +40,7 @@ const splitLink = split(
 
 const client = new ApolloClient({
   link: splitLink,
-  cache: new InMemoryCache(),
-  headers: {
-    'x-hasura-admin-secret' :
-       '4W85hKZFI1QzmEYuYFE3ai7b6PcrdYOdmQWZZ4wOA8SXBSizgNzYq4vzCEVPPWw2', 
- },
+  cache: new InMemoryCache()
 });
 
 export default client

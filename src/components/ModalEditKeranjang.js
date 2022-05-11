@@ -4,31 +4,25 @@ import { FaMinusSquare, FaPlusSquare } from "react-icons/fa";
 import { gql, useMutation } from "@apollo/client";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import { FiEdit} from "react-icons/fi";
 
-const ADD_KERANJANG = gql`
-mutation MyMutation($category: String = "", $gambar: String = "", $harga: Int = "", $id_user: Int = "", $jumlah: Int = "", $kode: String = "", $nama: String = "", $keterangan: String = "") {
-  insert_pesanan_keranjang(objects: {id_user: $id_user, category: $category, kode: $kode, nama: $nama, harga: $harga, gambar: $gambar, jumlah: $jumlah, keterangan: $keterangan}) {
-    returning {
-      id
-      id_user
-      kode
-      category
-      nama
-      jumlah
-      harga
-      gambar
-      keterangan
+const UPDATE_KERANJANG = gql`
+mutation MyMutation($id: Int = "", $keterangan: String = "", $jumlah: Int = 10, $harga: Int = 10) {
+    update_pesanan_keranjang(where: {id: {_eq: $id}}, _set: {keterangan: $keterangan, jumlah: $jumlah, harga: $harga}) {
+      returning {
+        id
+        nama
+      }
     }
-  }
-}
+  }  
 `;
 
-export default function ModalDetail(props) {
+export default function ModalEditKeranjang(props) {
   const [lgShow, setLgShow] = useState(false);
+  const [jumlahMenu, setJumlahMenu] = useState(props.jumlah);
   const [totalHarga, setTotalHarga] = useState(props.harga);
-  const [jumlahMenu, setJumlahMenu] = useState(1);
-  const [keterangan, setKeterangan] = useState("contoh : pedes dan sedang");
-  const [addKeranjang, { loading: addLoading, error: addError }] = useMutation(ADD_KERANJANG);
+  const [keterangan, setKeterangan] = useState(props.keterangan);
+  const [updateKeranjang, { loading: updateLoading, update: addError }] = useMutation(UPDATE_KERANJANG);
   const MySwal = withReactContent(Swal)
   
 
@@ -41,30 +35,9 @@ export default function ModalDetail(props) {
   };
 
   useEffect(() => {
-    setTotalHarga(props.harga * jumlahMenu);
+    setTotalHarga((props.harga/props.jumlah) * jumlahMenu);
   }, [jumlahMenu]);
-
-  useEffect(() => {
-    if(addLoading){
-      Swal.fire({
-          title: 'Sabar',
-          html: 'memasukan pesanan ke keranjang',
-          timer: 3000,
-          didOpen: () => {
-            Swal.showLoading()
-          },
-          willClose: () => {
-            Swal.fire(
-              'Berhasil!',
-              'Pesanan kamu telah di masukan ke keranjang!',
-              'success'
-            )
-          }
-      })
-    } 
-    
-  },[addLoading]);
- 
+  
 
   const handleChange = (e) => {
     setKeterangan(e.target.value);
@@ -81,45 +54,40 @@ export default function ModalDetail(props) {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    addKeranjang({
-      variables: {
-        "category": props.category,
-        "gambar": props.image,
-        "harga": totalHarga,
-        "id_user": 1,
-        "jumlah": jumlahMenu,
-        "kode" : props.kode,
-        "nama": props.nama,
-        "keterangan": keterangan
+    Swal.fire({
+      title: 'Sabar',
+      html: 'sedang mengubah pesanan',
+      timer: 3500,
+      didOpen: () => {
+        Swal.showLoading()
       },
-    });
-
-    console.log({
-      "category": props.category,
-        "gambar": props.image,
-        "harga": totalHarga,
-        "id_user": 1,
-        "jumlah": jumlahMenu,
-        "kode" : `${props.code}`,
-        "nama": props.nama,
-        "keterangan" : keterangan
+      willClose: () => {
+        Swal.fire(
+          'Berhasil!',
+          'Pesanan kamu telah di update',
+          'success'
+        )
+      }
     })
+    setLgShow(false);
+    await updateKeranjang({
+        variables: {
+            "keterangan": keterangan,
+            "jumlah": jumlahMenu,
+            "harga": totalHarga,
+            "id": props.id
+        },
+      });
+    // props.refetch();
   };
 
   return (
     <div className="d-grid gap-2">
-      <Button
-        onClick={() => {
-          handleModalTogle();
-        }}
-        variant="primary"
-        style={{ backgroundColor: "#F17228" }}
-        className=" border-0"
-      >
-        Pesan
-      </Button>
+      <div onClick={handleModalTogle}>
+        < FiEdit />
+        </div>
       <Modal
         size="lg"
         show={lgShow}
@@ -190,7 +158,7 @@ export default function ModalDetail(props) {
                     Close
                   </Button>
                   <Button variant="primary" type="submit">
-                    Pesan
+                    Update
                   </Button>
                 </Modal.Footer>
               </Form>
