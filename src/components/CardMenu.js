@@ -1,6 +1,7 @@
 import React from "react";
-import { Button, Card } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import ModalDetail from "./ModalDetail";
+import { numberWithCommas } from "../utils/numberWithCommas";
 
 export default function CardMenu(props) {
 
@@ -14,12 +15,13 @@ export default function CardMenu(props) {
         <Card.Body className="px-0">
           <Card.Title className=" text-start">{ props.nama }</Card.Title>
           <Card.Text className="text-start">
-            Rp{ props.harga }
+            Rp{numberWithCommas(props.harga)}
           </Card.Text>
           <Card.Text className=" text-start" style={{ color : "#F17228" }}>
             { props.category }
           </Card.Text>
         </Card.Body>
+        {/* mengirim data ke modal detail */}
         <ModalDetail image={props.image} nama={props.nama} harga={props.harga} category={props.category} kode={props.kode} />
       </Card>
     </div>

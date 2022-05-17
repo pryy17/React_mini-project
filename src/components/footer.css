@@ -8,21 +8,36 @@
     width: 10em;
 }
 
-.container-footer {
-    margin: 3.6em auto;
-    margin-bottom: 0;
 
-}
 
 .copyright {
-    margin: 0 auto;
-    margin-top: 2.5em;
     font-size: 14;
     border-top: solid white 1px;
-    width: 90%;
-
 }
 
 .copyright > div > p {
     font-size: 12px;
+}
+
+.container-footer {
+    margin: 0 auto;
+    margin-bottom: 0;
+
+}
+
+@media only screen and (min-width:992px) {
+    .container-footer {
+        margin: 3.6em auto;
+        margin-bottom: 0;
+    
+    }
+    
+    .copyright {
+        margin: 0 auto;
+        margin-top: 2.5em;
+        font-size: 14;
+        border-top: solid white 1px;
+        width: 90%;
+    }
+   
 }

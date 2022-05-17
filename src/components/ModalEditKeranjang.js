@@ -23,9 +23,7 @@ export default function ModalEditKeranjang(props) {
   const [totalHarga, setTotalHarga] = useState(props.harga);
   const [keterangan, setKeterangan] = useState(props.keterangan);
   const [updateKeranjang, { loading: updateLoading, update: addError }] = useMutation(UPDATE_KERANJANG);
-  const MySwal = withReactContent(Swal)
   
-
   const handleModalTogle = () => {
     if (lgShow === false) {
       setLgShow(true);
@@ -74,13 +72,12 @@ export default function ModalEditKeranjang(props) {
     setLgShow(false);
     await updateKeranjang({
         variables: {
-            "keterangan": keterangan,
+            "keterangan": `${props.nama} : ${keterangan}`,
             "jumlah": jumlahMenu,
             "harga": totalHarga,
             "id": props.id
         },
       });
-    // props.refetch();
   };
 
   return (

@@ -3,7 +3,7 @@ import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import { FaMinusSquare, FaPlusSquare } from "react-icons/fa";
 import { gql, useMutation } from "@apollo/client";
 import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
+import { numberWithCommas } from "../utils/numberWithCommas";
 
 const ADD_KERANJANG = gql`
 mutation MyMutation($category: String = "", $gambar: String = "", $harga: Int = "", $id_user: Int = "", $jumlah: Int = "", $kode: String = "", $nama: String = "", $keterangan: String = "") {
@@ -27,11 +27,11 @@ export default function ModalDetail(props) {
   const [lgShow, setLgShow] = useState(false);
   const [totalHarga, setTotalHarga] = useState(props.harga);
   const [jumlahMenu, setJumlahMenu] = useState(1);
-  const [keterangan, setKeterangan] = useState("contoh : pedes dan sedang");
+  const [keterangan, setKeterangan] = useState("biasa aja");
   const [addKeranjang, { loading: addLoading, error: addError }] = useMutation(ADD_KERANJANG);
-  const MySwal = withReactContent(Swal)
   
-
+  
+  
   const handleModalTogle = () => {
     if (lgShow === false) {
       setLgShow(true);
@@ -41,6 +41,7 @@ export default function ModalDetail(props) {
   };
 
   useEffect(() => {
+    // merubah data totalHarga realtime 
     setTotalHarga(props.harga * jumlahMenu);
   }, [jumlahMenu]);
 
@@ -59,6 +60,8 @@ export default function ModalDetail(props) {
               'Pesanan kamu telah di masukan ke keranjang!',
               'success'
             )
+
+            handleModalTogle();
           }
       })
     } 
@@ -92,20 +95,22 @@ export default function ModalDetail(props) {
         "jumlah": jumlahMenu,
         "kode" : props.kode,
         "nama": props.nama,
-        "keterangan": keterangan
+        "keterangan": `${props.nama} : ${keterangan}`
       },
     });
 
-    console.log({
-      "category": props.category,
-        "gambar": props.image,
-        "harga": totalHarga,
-        "id_user": 1,
-        "jumlah": jumlahMenu,
-        "kode" : `${props.code}`,
-        "nama": props.nama,
-        "keterangan" : keterangan
-    })
+    // console.log({
+    //   "category": props.category,
+    //     "gambar": props.image,
+    //     "harga": totalHarga,
+    //     "id_user": 1,
+    //     "jumlah": jumlahMenu,
+    //     "kode" : `${props.kode}`,
+    //     "nama": props.nama,
+    //     "keterangan" : keterangan
+    // })
+
+    // console.log(props)
   };
 
   return (
@@ -152,7 +157,7 @@ export default function ModalDetail(props) {
                     <strong>Harga :</strong>
                   </Form.Label>
                   <Row style={{ width: "50%", textAlign: "left" }}>
-                    <Col>Rp.{totalHarga}</Col>
+                    <Col>Rp.{numberWithCommas(totalHarga) }</Col>
                   </Row>
                   <Form.Label>
                     <strong>Jumlah Pesanan :</strong>

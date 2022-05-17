@@ -12,9 +12,9 @@ const httpLink = new HttpLink({
 });
 
 const wsLink = new GraphQLWsLink(createClient({
-  url: 'ws://valid-jaybird-88.hasura.app/v1/graphql',
+  url: 'wss://valid-jaybird-88.hasura.app/v1/graphql',
   connectionParams: {
-    Headers : {
+    headers : {
       "x-hasura-admin-secret" : "4W85hKZFI1QzmEYuYFE3ai7b6PcrdYOdmQWZZ4wOA8SXBSizgNzYq4vzCEVPPWw2"
     }
   },

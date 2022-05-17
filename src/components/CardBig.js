@@ -1,9 +1,10 @@
 import React from 'react'
 import {Button, Col, Row } from 'react-bootstrap';
 import './CardBig.css';
+import ModalDetail from './ModalDetail';
 
 export default function CardBig(props) {
-
+// menentukan letak gambar 
 if(props.position === "left") {
     return (
         <div  className="card-big mb-5" style={{borderRadius: "17px"}}>
@@ -18,7 +19,7 @@ if(props.position === "left") {
                                 <p className=' p-0'>{props.text}</p>
                             </Row>
                             <Row>
-                                <Button variant="primary" style={{ backgroundColor : "#F17228"}} className=" border-0">Pesan</Button>
+                                <ModalDetail image={props.image} nama={props.foodName} harga={props.harga} category={props.category} kode={props.kode} />
                             </Row>
                         </div>
                     </Col>
@@ -29,6 +30,7 @@ if(props.position === "left") {
                     </Col>
                 </Row>
             </div>
+
         </div>
     )
 } else {
@@ -37,8 +39,8 @@ if(props.position === "left") {
             <div>
                 <Row style={{ height: "19em"}} className=" p-0 m-0 overflow-hidden">
                     <Col md={7} className=" p-0 m-0 overflow-hidden">
-                        <div style={{ backgroundColor: "red", height: "100%", }}>
-                            <img />
+                        <div style={{ overflow : "hidden", height: "19em"}}>
+                            <img src={`img/makanan/${props.image}`} style={{ width: "37em"}} />
                         </div>
                     </Col>
                     <Col className=' text-start mx-5 align-self-center'>
@@ -50,7 +52,7 @@ if(props.position === "left") {
                                 <p className=' p-0'>Enjoy the large size of sandwiches. Complete perfect slice of sandwiches.</p>
                             </Row>
                             <Row>
-                                <Button variant="primary" style={{ backgroundColor : "#F17228"}} className=" border-0">Pesan</Button>
+                            <ModalDetail image={props.image} nama={props.foodName} harga={props.harga} category={props.category} kode={props.kode} />
                             </Row>
                         </div>
                     </Col>

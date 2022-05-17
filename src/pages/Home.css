@@ -15,3 +15,19 @@
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+.cardbig-container {
+    display: none;
+}
+
+@media only screen and (min-width:992px) {
+    .menu-container {
+        width: 60em;
+    }
+    .cardbig-container {
+        width: 60em;
+    }
+    .cardbig-container {
+        display: block !important;
+    }
+}
