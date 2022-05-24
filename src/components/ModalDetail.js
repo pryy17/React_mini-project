@@ -4,6 +4,7 @@ import { FaMinusSquare, FaPlusSquare } from "react-icons/fa";
 import { gql, useMutation } from "@apollo/client";
 import Swal from 'sweetalert2';
 import { numberWithCommas } from "../utils/numberWithCommas";
+import Cookie from 'universal-cookie';
 
 const ADD_KERANJANG = gql`
 mutation MyMutation($category: String = "", $gambar: String = "", $harga: Int = "", $id_user: Int = "", $jumlah: Int = "", $kode: String = "", $nama: String = "", $keterangan: String = "") {
@@ -29,7 +30,8 @@ export default function ModalDetail(props) {
   const [jumlahMenu, setJumlahMenu] = useState(1);
   const [keterangan, setKeterangan] = useState("biasa aja");
   const [addKeranjang, { loading: addLoading, error: addError }] = useMutation(ADD_KERANJANG);
-  
+  let cookies = new Cookie();
+  const userId = cookies.get('userId');
   
   
   const handleModalTogle = () => {
@@ -85,19 +87,26 @@ export default function ModalDetail(props) {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    addKeranjang({
-      variables: {
-        "category": props.category,
-        "gambar": props.image,
-        "harga": totalHarga,
-        "id_user": 1,
-        "jumlah": jumlahMenu,
-        "kode" : props.kode,
-        "nama": props.nama,
-        "keterangan": `${props.nama} : ${keterangan}`
-      },
-    });
+    e.preventDefault()
+    if(userId === undefined) {
+      Swal.fire("maaf :(", "login terlebih dahulu", "error");
+    }else {
+      e.preventDefault();
+      addKeranjang({
+        variables: {
+          "category": props.category,
+          "gambar": props.image,
+          "harga": totalHarga,
+          "id_user": userId,
+          "jumlah": jumlahMenu,
+          "kode" : props.kode,
+          "nama": props.nama,
+          "keterangan": `${props.nama} : ${keterangan}`
+        },
+      });
+    }
+
+   
 
     // console.log({
     //   "category": props.category,

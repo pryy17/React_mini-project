@@ -10,6 +10,7 @@ import About from "./pages/About";
 import { Route, Routes } from "react-router-dom";
 import Footer from "./components/Footer";
 import "aos/dist/aos.css";
+import Login from "./pages/Login";
 
 function App() {
   const dispatch = useDispatch();
@@ -36,6 +37,7 @@ function App() {
       <Navbar/>
       </div>
       <Routes>
+        <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home1 />} />
         <Route path="/menu" element={<Menu />} />
         <Route path="/about" element={<About /> } />

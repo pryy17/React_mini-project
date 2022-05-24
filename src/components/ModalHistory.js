@@ -4,6 +4,7 @@ import { gql, useQuery, useSubscription } from "@apollo/client";
 import { Row } from "react-bootstrap";
 import ModalPayment from "./ModalPayment";
 import { numberWithCommas } from "../utils/numberWithCommas";
+import Cookie from 'universal-cookie';
 
 const DATA_PESANAN = gql`
   subscription MySubscription($_eq: Int = "") {
@@ -19,19 +20,21 @@ const DATA_PESANAN = gql`
 `;
 const QUERY_USER = gql`
   query MyQuery($_eq: Int = 10) {
-    user_user(where: { id_user: { _eq: $_eq } }) {
+    user_user(where: { id: { _eq: $_eq } }) {
       alamat
       telp
-      id_user
+      id
     }
   }
 `;
 
 export default function ModalHistory() {
+  let cookies = new Cookie();
+  const userId = cookies.get('userId');
   const { data, loading, error } = useSubscription(DATA_PESANAN, {
-    variables: { _eq: 1 },
+    variables: { _eq: userId },
   });
-  const { data: dataUser} = useQuery(QUERY_USER, { variables: { _eq: 1 } });
+  const { data: dataUser} = useQuery(QUERY_USER, { variables: { _eq: userId } });
   const [lgShow, setLgShow] = useState(false);
   const pesanan = data;
   const user = dataUser?.user_user;
@@ -47,7 +50,7 @@ export default function ModalHistory() {
   // fungsi menampilkan status pesanan
   const handleStatusPayment = (status, pesananId) => {
     if (status === "menunggu pembayaran") {
-      return user?.map((user) => <ModalPayment pesananId={pesananId} key={user.id_user} userId={user.id_user} alamat={user.alamat} telp={user.telp} />);
+      return user?.map((user) => <ModalPayment pesananId={pesananId} key={user.id} userId={user.id} alamat={user.alamat} telp={user.telp} />);
     } else {
       return <img src="img/cooking.png" style={{ width : "50px" }} alt="cooking" />;
     }

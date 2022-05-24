@@ -25,6 +25,7 @@
     "slick-carousel": "^1.8.1",
     "sweetalert2": "^11.4.13",
     "sweetalert2-react-content": "^5.0.0",
+    "universal-cookie": "^4.0.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

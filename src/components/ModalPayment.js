@@ -5,12 +5,11 @@ import Swal from 'sweetalert2';
 
 const QUERY_UPDATE_USER = gql`
 mutation MyMutation($_eq: Int = "", $alamat: String = "", $telp: String = "") {
-  update_user_user(where: {id_user: {_eq: $_eq}}, _set: {telp: $telp, alamat: $alamat}) {
+  update_user_user(where: {id: {_eq: $_eq}}, _set: {telp: $telp, alamat: $alamat}) {
     returning {
       alamat
       email
       id
-      id_user
       nama
     }
   }

@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import './About1.css';
+import './About.css';
 import AOS from 'aos';
 
 export default function About() {
