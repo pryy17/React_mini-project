@@ -1,3 +1,7 @@
+# source
+Figma : [foodys](https://www.figma.com/file/ZM2m6iW27He8ohf0dtyRIc/foodys-min-project-React?node-id=342%3A144).
+deploy : https://app-foodys.netlify.app/
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
