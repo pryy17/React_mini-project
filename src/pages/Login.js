@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { Card, Button, Form, Col, Row } from "react-bootstrap";
 import { gql, useLazyQuery } from "@apollo/client";
@@ -8,9 +9,7 @@ import ModalRegister from "../components/ModalRegister";
 
 const QUERY_LOGIN = gql`
   query MyQuery($nama: String = "", $password: String = "") {
-    user_user(
-      where: { email: { _like: $nama }, password: { _like: $password } }
-    ) {
+    user(where: { email: { _like: $nama }, password: { _like: $password } }) {
       id
       alamat
       email
@@ -27,8 +26,9 @@ export default function Login() {
   const [password, setPassword] = useState();
   const auth = cookies.get("auth");
   let navigate = useNavigate();
-  const dataUser = data?.user_user[0];
+  const dataUser = data?.user[0];
 
+  console.log(data);
 
   const handleSubmitLogin = async (e) => {
     e.preventDefault();
@@ -39,8 +39,8 @@ export default function Login() {
         password: password,
       },
     });
-
-    if (data?.user_user.length === 0) {
+    console.log(data);
+    if (data?.user.length === 0) {
       Swal.fire("maaf :(", "data pengguna tidak di temukan", "question");
     }
   };
@@ -54,15 +54,13 @@ export default function Login() {
   };
 
   useEffect(() => {
-    if (data?.user_user.length === 1) {
+    if (data?.user.length === 1) {
       cookies.set("userId", dataUser?.id, { path: "/" });
       cookies.set("auth", true, { path: "/" });
       Swal.fire("Berhasil!", "selamat datang di foodys!", "success");
       return navigate("/", { replace: true });
     }
-  }, [dataUser]);
-
- 
+  }, [data]);
 
   return (
     <div
@@ -95,7 +93,7 @@ export default function Login() {
                   onChange={handleChangePassword}
                 />
               </Form.Group>
-              <Row >
+              <Row>
                 <Col>
                   <Button variant="primary" type="submit">
                     login

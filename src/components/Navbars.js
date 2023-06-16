@@ -10,7 +10,7 @@ import { gql, useQuery } from "@apollo/client";
 
 const DATA_USER = gql`
   query MyQuery($id: Int = 10) {
-    user_user(where: { id: { _eq: $id } }) {
+    user(where: { id: { _eq: $id } }) {
       nama
     }
   }
@@ -22,7 +22,7 @@ export default function Navbars() {
   const userId = cookies.get("userId");
   const { data, error } = useQuery(DATA_USER, { variables: { id: userId } });
   let navigate = useNavigate();
-  const dataUser = data?.user_user[0];
+  const dataUser = data?.user[0];
   console.log(dataUser?.nama);
 
   const handleLogout = ()=>{

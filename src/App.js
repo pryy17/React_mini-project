@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import "./App.css";
 import Home1 from "./pages/Home1";
 import Navbar from "./components/Navbars";
@@ -17,19 +18,20 @@ function App() {
 
   useEffect(() => {
     axios
-      .get("https://api.jsonbin.io/b/6267596e25069545a3293fab/3")
+      .get("https://api.jsonbin.io/v3/b/6267596e25069545a3293fab/3")
       .then((data) => {
         let menus = {
-          products: data.data.products,
-          categories: data.data.categories
+          products : data.data.record.products,
+          categories : data.data.record.categories
         }
         dispatch(fetchData(menus));
+        console.log(data)
 
       })
       .catch((err) => {
         console.log(err);
       });
-  });
+  }, []);
 
   return (
     <div className="App">

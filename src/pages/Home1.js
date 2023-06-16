@@ -21,6 +21,7 @@ export default function Home1() {
   const menu3 = dataMenu.filter((menu) => {
     return menu.nama === "Pizza";
   });
+  console.log(dataMenu)
 
   useEffect(() => {
     AOS.init({
