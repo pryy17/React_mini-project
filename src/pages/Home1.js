@@ -1,4 +1,4 @@
-import React, { useEffect} from "react";
+import React, { useEffect } from "react";
 import { Col, Button, Row } from "react-bootstrap";
 import CardIcon from "../components/CardIcon";
 import CardSlider from "../components/CardSlider";
@@ -6,9 +6,8 @@ import "./Home.css";
 import MenuList from "../components/MenuList";
 import CardBig from "../components/CardBig";
 import { useSelector } from "react-redux";
-import {Link} from 'react-router-dom';
-import AOS from 'aos';
-
+import { Link } from "react-router-dom";
+import AOS from "aos";
 
 export default function Home1() {
   const dataMenu = useSelector((state) => state.products.menus);
@@ -21,11 +20,11 @@ export default function Home1() {
   const menu3 = dataMenu.filter((menu) => {
     return menu.nama === "Pizza";
   });
-  console.log(dataMenu)
+  console.log(dataMenu);
 
   useEffect(() => {
     AOS.init({
-      duration: 2000
+      duration: 2000,
     });
   }, []);
 
@@ -39,16 +38,27 @@ export default function Home1() {
                 Are you starving?
               </strong>{" "}
               <br />
-              <p style={{color: "#F17228"}}><strong>dengan hanya beberapa click! makanan datang mudah dan puas</strong></p>
+              <p style={{ color: "#F17228" }}>
+                <strong>
+                  dengan hanya beberapa click! makanan datang mudah dan puas
+                </strong>
+              </p>
               <Link to="/menu">
-              <Button style={{ backgroundColor: "#F17228", border : "none" }} type="button" >
-                <strong style={{ color:'white' }}>Pesan Sekarang</strong>
-              </Button>
+                <Button
+                  style={{ backgroundColor: "#F17228", border: "none" }}
+                  type="button"
+                >
+                  <strong style={{ color: "white" }}>Pesan Sekarang</strong>
+                </Button>
               </Link>
             </div>
           </Col>
           <Col className="mangkok d-flex align-items-center justify-content-center text-start">
-            <img src="img/image.png" alt="mangkok" className=" pt-5" />
+            <img
+              src="https://i.ibb.co/3h09x8h/Image.png"
+              alt="mangkok"
+              className=" pt-5"
+            />
           </Col>
         </Row>
       </div>
@@ -58,11 +68,16 @@ export default function Home1() {
         style={{ overflow: "hidden" }}
       >
         <div>
-          <Row >
-            <h1 data-aos={"flip-down"} style={{ color: "#FFB20E" }}>How does it works</h1>
+          <Row>
+            <h1 data-aos={"flip-down"} style={{ color: "#FFB20E" }}>
+              How does it works
+            </h1>
           </Row>
           <Row className="d-flex justify-content-center row-cols-1 row-cols-lg-3 row-cols-md-2">
-            <Col className="d-flex justify-content-center" data-aos={"fade-right"}>
+            <Col
+              className="d-flex justify-content-center"
+              data-aos={"fade-right"}
+            >
               <CardIcon
                 gambar={"menu.png"}
                 title={"Choose order"}
@@ -78,7 +93,10 @@ export default function Home1() {
                 }
               />
             </Col>
-            <Col className="d-flex justify-content-center" data-aos={"fade-left"}>
+            <Col
+              className="d-flex justify-content-center"
+              data-aos={"fade-left"}
+            >
               <CardIcon
                 gambar={"donut.png"}
                 title={"Enjoy meals"}
@@ -107,73 +125,72 @@ export default function Home1() {
 
       <div className="d-flex justify-content-center mt-5">
         <div>
-        <div className="menu-container">
-          <MenuList displayData={8} />
-        </div>
-        <div>
-          <Link to="/menu">
-          <Button
-            variant="primary"
-            style={{ backgroundColor: "#F17228" }}
-            className=" border-0"
-          >
-            More...
-          </Button>
-          </Link>
-        </div>
+          <div className="menu-container">
+            <MenuList displayData={8} />
+          </div>
+          <div>
+            <Link to="/menu">
+              <Button
+                variant="primary"
+                style={{ backgroundColor: "#F17228" }}
+                className=" border-0"
+              >
+                More...
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
 
       <div
         className="d-flex justify-content-evenly text-decoration-none mt-5"
-        style={{ overflow: "hidden"}}
-        
+        style={{ overflow: "hidden" }}
       >
         <div className="cardbig-container">
           <Row data-aos={"zoom-in-left"}>
-          <CardBig
-            position={"left"}
-            className=" mb-5"
-            foodName={menu1[0]?.nama}
-            title={"Best deals"}
-            text={
-              "Get the best fried chicken smeared with a lip smacking lemon chili flavor. Check out best deals for fried chicken."
-            }
-            image={menu1[0]?.gambar}
-            harga={menu1[0]?.harga}
-            category={menu1[0]?.category.nama}
-            kode={menu1[0]?.kode}
-          />
+            <CardBig
+              position={"left"}
+              className=" mb-5"
+              foodName={menu1[0]?.nama}
+              title={"Best deals"}
+              text={
+                "Get the best fried chicken smeared with a lip smacking lemon chili flavor. Check out best deals for fried chicken."
+              }
+              image={menu1[0]?.gambar}
+              harga={menu1[0]?.harga}
+              category={menu1[0]?.category.nama}
+              kode={menu1[0]?.kode}
+            />
           </Row>
           <Row data-aos={"zoom-in-right"}>
-          <CardBig
-            position={"right"}
-            className=" mb-5"
-            foodName={menu2[0]?.nama}
-            title={"Best deals"}
-            text={
-              "Enjoy the large size of sandwiches. Complete perfect slice of sandwiches."
-            }
-            image={menu2[0]?.gambar}
-            harga={menu2[0]?.harga}
-            category={menu2[0]?.category.nama}
-            kode={menu2[0]?.kode}
-          />
+            <CardBig
+              position={"right"}
+              className=" mb-5"
+              foodName={menu2[0]?.nama}
+              title={"Best deals"}
+              text={
+                "Enjoy the large size of sandwiches. Complete perfect slice of sandwiches."
+              }
+              image={menu2[0]?.gambar}
+              harga={menu2[0]?.harga}
+              category={menu2[0]?.category.nama}
+              kode={menu2[0]?.kode}
+            />
           </Row>
           <Row data-aos={"zoom-in-left"}>
-          <CardBig
-            position={"left"}
-            className=" mb-5"
-            foodName={menu3[0]?.nama}
-            title={"Best deals"}
-            text={
-              "Pair up with a friend and enjoy the hot and crispy pizza pops. Try it with the best deals."
-            }
-            image={menu3[0]?.gambar}
-            harga={menu3[0]?.harga}
-            category={menu3[0]?.category.nama}
-            kode={menu3[0]?.kode}
-          />
+            <CardBig
+              position={"left"}
+              className=" mb-5"
+              foodName={menu3[0]?.nama}
+              title={"Best deals"}
+              text={
+                "Pair up with a friend and enjoy the hot and crispy pizza pops. Try it with the best deals."
+              }
+              image={menu3[0]?.gambar}
+              harga={menu3[0]?.harga}
+              category={menu3[0]?.category.nama}
+              kode={menu3[0]?.kode}
+            />
           </Row>
         </div>
       </div>
