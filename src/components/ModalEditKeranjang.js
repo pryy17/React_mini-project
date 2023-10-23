@@ -8,10 +8,10 @@ import { FiEdit} from "react-icons/fi";
 
 const UPDATE_KERANJANG = gql`
 mutation MyMutation($id: Int = "", $keterangan: String = "", $jumlah: Int = 10, $harga: Int = 10) {
-    update_pesanan_keranjang(where: {id: {_eq: $id}}, _set: {keterangan: $keterangan, jumlah: $jumlah, harga: $harga}) {
+    update_keranjang(where: {id: {_eq: $id}}, _set: {keterangan: $keterangan, jumlah: $jumlah, price: $harga}) {
       returning {
         id
-        nama
+        name
       }
     }
   }  

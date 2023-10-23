@@ -8,19 +8,19 @@ import Cookie from 'universal-cookie';
 
 const DATA_PESANAN = gql`
   subscription MySubscription($_eq: Int = "") {
-    pesanan_pesanans(where: { id_user: { _eq: $_eq } }) {
+    pesanan(where: { id_user: { _eq: $_eq } }) {
       id
       id_user
       keterangan
       pesanan
       status
-      total_harga
+      price
     }
   }
 `;
 const QUERY_USER = gql`
   query MyQuery($_eq: Int = 10) {
-    user_user(where: { id: { _eq: $_eq } }) {
+    user(where: { id: { _eq: $_eq } }) {
       alamat
       telp
       id
@@ -37,7 +37,7 @@ export default function ModalHistory() {
   const { data: dataUser} = useQuery(QUERY_USER, { variables: { _eq: userId } });
   const [lgShow, setLgShow] = useState(false);
   const pesanan = data;
-  const user = dataUser?.user_user;
+  const user = dataUser?.user;
 
   const handleModalTogle = () => {
     if (lgShow === false) {
@@ -112,7 +112,7 @@ export default function ModalHistory() {
           </Row>
 
           {/* body keranjang */}
-          {pesanan?.pesanan_pesanans.map((pesanan) => (
+          {pesanan?.pesanan.map((pesanan) => (
             <Row className=" mb-3" key={pesanan.id}>
               <Col className=" d-flex align-self-center justify-content-center border-end">
                 <p>{pesanan.id}</p>
@@ -126,7 +126,7 @@ export default function ModalHistory() {
                 <p>{pesanan.keterangan}</p>
               </Col>
               <Col className=" d-flex align-self-center justify-content-center border-end">
-                <p>Rp.{numberWithCommas(pesanan.total_harga)}</p>
+                <p>Rp.{numberWithCommas(pesanan.price)}</p>
               </Col>
               <Col className=" d-flex align-self-center justify-content-center border-end">
                 <p>{pesanan.status}</p>

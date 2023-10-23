@@ -8,17 +8,15 @@ import Cookie from 'universal-cookie';
 
 const ADD_KERANJANG = gql`
 mutation MyMutation($category: String = "", $gambar: String = "", $harga: Int = "", $id_user: Int = "", $jumlah: Int = "", $kode: String = "", $nama: String = "", $keterangan: String = "") {
-  insert_pesanan_keranjang(objects: {id_user: $id_user, category: $category, kode: $kode, nama: $nama, harga: $harga, gambar: $gambar, jumlah: $jumlah, keterangan: $keterangan}) {
+  insert_keranjang(objects: {id_user: $id_user, name: $nama, price: $harga, img: $gambar, jumlah: $jumlah, keterangan: $keterangan}) {
     returning {
       id
       id_user
-      kode
-      category
-      nama
+      img
       jumlah
-      harga
-      gambar
       keterangan
+      name
+      price
     }
   }
 }

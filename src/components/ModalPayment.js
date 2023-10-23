@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 
 const QUERY_UPDATE_USER = gql`
 mutation MyMutation($_eq: Int = "", $alamat: String = "", $telp: String = "") {
-  update_user_user(where: {id: {_eq: $_eq}}, _set: {telp: $telp, alamat: $alamat}) {
+  update_user(where: {id: {_eq: $_eq}}, _set: {telp: $telp, alamat: $alamat}) {
     returning {
       alamat
       email
@@ -17,14 +17,14 @@ mutation MyMutation($_eq: Int = "", $alamat: String = "", $telp: String = "") {
 `;
 
 const QUERY_UPDATE_STATUS = gql`mutation MyMutation($_eq: Int = "", $status: String = "") {
-  update_pesanan_pesanans(where: {id: {_eq: $_eq}}, _set: {status: $status}) {
+  update_pesanan(where: {id: {_eq: $_eq}}, _set: {status: $status}) {
     returning {
       id
       id_user
       keterangan
       pesanan
       status
-      total_harga
+      price
     }
   }
 }

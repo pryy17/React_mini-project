@@ -4,7 +4,7 @@ import { gql, useMutation } from "@apollo/client";
 import Swal from "sweetalert2";
 
 const INSERT_USER = gql`mutation MyMutation($email: String = "", $nama: String = "", $password: String = "") {
-  insert_user_user(objects: {nama: $nama, password: $password, email: $email}) {
+  insert_user(objects: {nama: $nama, password: $password, email: $email}) {
     returning {
       nama
       email

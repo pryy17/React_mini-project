@@ -8,44 +8,26 @@ import ModalEditKeranjang from "./ModalEditKeranjang";
 import { numberWithCommas } from "../utils/numberWithCommas";
 import Cookie from "universal-cookie";
 
-const DATA_KERANJANG = gql`
-  query MyQuery($_eq: Int = "") {
-    pesanan_keranjang(where: { id_user: { _eq: $_eq } }) {
-      category
-      gambar
-      harga
-      id
-      id_user
-      jumlah
-      keterangan
-      kode
-      nama
-    }
-  }
-`;
-
 const SUBSCIPTION_DATA = gql`
   subscription MySubscription($id: Int = "") {
-    pesanan_keranjang(where: { id_user: { _eq: $id } }) {
-      category
-      gambar
-      harga
+    keranjang(where: { id_user: { _eq: $id } }) {
       id
       id_user
+      img
       jumlah
       keterangan
-      kode
-      nama
+      name
+      price
     }
   }
 `;
 
 const DELETE_KERANJANG = gql`
   mutation MyMutation($_eq: Int = "") {
-    delete_pesanan_keranjang(where: { id: { _eq: $_eq } }) {
+    delete_keranjang(where: { id: { _eq: $_eq } }) {
       returning {
-        nama
-        kode
+        id
+        name
       }
     }
   }
@@ -59,13 +41,13 @@ const INSERT_PESANAN = gql`
     $status: String = ""
     $total_harga: Int = 10
   ) {
-    insert_pesanan_pesanans(
+    insert_pesanan(
       objects: {
         id_user: $id_user
         keterangan: $keterangan
         pesanan: $pesanan
         status: $status
-        total_harga: $total_harga
+        price: $total_harga
       }
     ) {
       returning {
@@ -78,19 +60,12 @@ const INSERT_PESANAN = gql`
 `;
 
 const DELETE_ALL_KERANJANG = gql`
-  mutation MyMutation(
-    $id_user: Int = ""
-    $keterangan: String = ""
-    $pesanan: String = ""
-    $status: String = ""
-    $total_harga: Int = 10
-    $_eq: Int = 10
-  ) {
-    delete_pesanan_keranjang(where: { id_user: { _eq: $_eq } }) {
+  mutation MyMutation($_eq: Int) {
+    delete_keranjang(where: { id_user: { _eq: $_eq } }) {
       returning {
-        nama
+        name
         id_user
-        harga
+        price
       }
     }
   }
@@ -99,8 +74,10 @@ const DELETE_ALL_KERANJANG = gql`
 export default function ModalKeranjang() {
   let cookies = new Cookie();
   const userId = cookies.get("userId");
-  const [deleteKeranjang, { error: errorDelete }] = useMutation(DELETE_KERANJANG);
-  const [deleteAllKeranjang, { error: errorAllDelete }] = useMutation(DELETE_ALL_KERANJANG);
+  const [deleteKeranjang, { error: errorDelete }] =
+    useMutation(DELETE_KERANJANG);
+  const [deleteAllKeranjang, { error: errorAllDelete }] =
+    useMutation(DELETE_ALL_KERANJANG);
   const [listMenu, setListMenu] = useState();
   const [listKeterangan, setListKeterangan] = useState();
   const {
@@ -129,28 +106,27 @@ export default function ModalKeranjang() {
       setLgShow(false);
     }
   };
-
+  console.log(keranjang);
   const handleInsertDataPesanan = () => {
     if (userId === undefined) {
       Swal.fire("maaf :(", "login terlebih dahulu", "error");
     } else {
       // totalharga pesanan
       let harga = [];
-      keranjang.pesanan_keranjang.map((item) => harga.push(item.harga));
+      keranjang.keranjang.map((item) => harga.push(item.price));
       let totalHarga = harga.reduce((a, b) => a + b);
+      console.log(totalHarga)
 
       //list Pesanan
       let pesananArr = [];
-      keranjang.pesanan_keranjang.map((item) =>
-        pesananArr.push(`${item.nama}(${item.jumlah})`)
+      keranjang.keranjang.map((item) =>
+        pesananArr.push(`${item.name}(${item.jumlah})`)
       );
       let listPesanan = pesananArr.reduce((a, b) => `${a}, ${b}`);
 
       // list keterangan
       let keteranganArr = [];
-      keranjang.pesanan_keranjang.map((item) =>
-        keteranganArr.push(item.keterangan)
-      );
+      keranjang.keranjang.map((item) => keteranganArr.push(item.keterangan));
       let listKeterangan = keteranganArr.reduce((a, b) => `${a}, ${b},`);
 
       let data = {
@@ -171,12 +147,6 @@ export default function ModalKeranjang() {
         },
       });
 
-      deleteAllKeranjang({
-        variables: {
-          _eq: userId,
-        },
-      });
-
       Swal.fire({
         title: "Sabar",
         html: "sedang mengirim data",
@@ -185,6 +155,11 @@ export default function ModalKeranjang() {
           Swal.showLoading();
         },
         willClose: () => {
+          deleteAllKeranjang({
+            variables: {
+              _eq: userId,
+            },
+          });
           Swal.fire(
             "Berhasil!",
             "Pesanan kamu telah di terima mohon untuk melakukan pembayaran",
@@ -250,34 +225,34 @@ export default function ModalKeranjang() {
           </Row>
 
           {/* body keranjang */}
-          {keranjang?.pesanan_keranjang.map((keranjang) => (
+          {keranjang?.keranjang?.map((keranjang) => (
             <Row className=" mb-3" key={keranjang.id}>
               <Col style={{ overflow: "hidden" }}>
                 <div style={{ overflow: "hidden", height: "100%" }}>
                   <img
-                    src={`img/makanan/${keranjang.gambar}`}
+                    src={`img/makanan/${keranjang.img}`}
                     alt="keranjang"
                     style={{ width: "100%" }}
                   />
                 </div>
               </Col>
               <Col className=" d-flex align-self-center justify-content-center border-end">
-                <p>{keranjang.nama}</p>
+                <p>{keranjang.name}</p>
               </Col>
               <Col className=" d-flex align-self-center justify-content-center border-end">
                 <p>{keranjang.jumlah}</p>
               </Col>
               <Col className=" d-flex align-self-center justify-content-center border-end">
-                <p>Rp.{numberWithCommas(keranjang.harga)}</p>
+                <p>Rp.{numberWithCommas(keranjang.price)}</p>
               </Col>
               <Col className=" d-flex align-self-center justify-content-center pb-3 border-end">
                 <div style={{ cursor: "pointer" }}>
                   <ModalEditKeranjang
                     id={keranjang.id}
                     keterangan={keranjang.keterangan}
-                    image={keranjang.gambar}
-                    nama={keranjang.nama}
-                    harga={keranjang.harga}
+                    image={keranjang.img}
+                    nama={keranjang.name}
+                    harga={keranjang.price}
                     jumlah={keranjang.jumlah}
                   />
                 </div>
